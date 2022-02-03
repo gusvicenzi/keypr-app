@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 
-export default function CreateArea() {
+export default function CreateArea(props) {
     const [note, setNote] = useState({title: "", content: ""});
 
     function handleChange(event){
-        console.log(event.target);
         const {name, value} = event.target;
+
+        setNote(prevNote => {
+            return {...prevNote,
+                    [name]: value
+            }
+        })
+    }
+
+    function submitNote(event){
+        props.onAdd(note);
+        event.preventDefault();
     }
 
   return (
@@ -13,7 +23,7 @@ export default function CreateArea() {
       <form>
         <input name="title" value={note.title} onChange={handleChange} placeholder="Title" />
         <textarea name="content" value={note.content} onChange={handleChange} placeholder="Take a note..." rows="3" />
-        <button>Add</button>
+        <button onClick={submitNote}>Add</button>
       </form>
     </div>
   );
